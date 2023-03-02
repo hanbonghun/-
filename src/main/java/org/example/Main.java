@@ -27,6 +27,18 @@ public class Main {
                 for(int i=list.size()-1; i>=0; i--){
                     System.out.println(list.get(i));
                 }
+            }else if(cmd.matches("삭제\\?id=[0-9]+")){
+                int id = Integer.parseInt(cmd.split("=")[1]);
+                boolean isExist =false;
+                for(Quote q : list){
+                    if(q.getId()== id) {
+                        list.remove(q);
+                        System.out.print(id+"번 명언이 삭제되었습니다.\n");
+                        isExist = true;
+                        break;
+                    }
+                }
+                if(!isExist)System.out.print(id+"번 명언은 존재하지 않습니다.\n");
             }
         }
     }
