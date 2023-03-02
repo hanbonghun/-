@@ -21,6 +21,12 @@ public class Main {
                 list.add(q);
                 System.out.println(Quote.numberOfQuotes+ "번 명언이 등록되었습니다.");
 
+            }else if(cmd.equals(("목록"))){
+                System.out.print("번호 / 작가 / 명언\n");
+                System.out.print("----------------------\n");
+                for(int i=list.size()-1; i>=0; i--){
+                    System.out.println(list.get(i));
+                }
             }
         }
     }
@@ -64,4 +70,9 @@ class Quote{
         this.content = content;
         this.author = author;
     }
+    @Override
+    public String toString(){
+        return this.id+" / "+ this.author+" / "+this.content;
+    }
+
 }
