@@ -1,17 +1,26 @@
 package org.example;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.util.*;
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         List<Quote> list = new LinkedList<>();
+        ObjectMapper mapper = new ObjectMapper();
 
         System.out.println("== 명언 앱 ==");
         while(true){
             System.out.print("명령 ) ");
             String cmd = sc.nextLine();
             if(cmd.equals("종료")){
-                return;
+                mapper.writeValue(new File("data.json"), list);
+                System.out.println();
+                System.out.println("프로그램 다시 시작...");
+                list.clear();
+                Quote[] quotes = mapper.readValue(new File("data.json"), Quote[].class);
+                list = Arrays.asList(quotes);
+                Quote.numberOfQuotes = list.size();
             }else if (cmd.equals("등록")){
                 System.out.print("명언 : ");
                 String quote = sc.nextLine();
@@ -56,6 +65,9 @@ public class Main {
                     }
                 }
                 if(!isExist) System.out.print(id+"번 명언은 존재하지 않습니다.\n");
+            }else if (cmd.equals("빌드")){
+                //jackson 라이브러리 활용
+                mapper.writeValue(new File("data.json"), list);
             }
         }
     }
