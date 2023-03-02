@@ -39,6 +39,23 @@ public class Main {
                     }
                 }
                 if(!isExist)System.out.print(id+"번 명언은 존재하지 않습니다.\n");
+            }else if(cmd.matches("수정\\?id=[0-9]+")){
+                int id = Integer.parseInt(cmd.split("=")[1]);
+                boolean isExist =false;
+                for(Quote q : list){
+                    if(q.getId()== id) {
+                        System.out.print("명언(기존) : "+q.getContent()+"\n");
+                        System.out.print("명언 : ");
+                        String content = sc.nextLine();
+                        System.out.print("작가(기존) : "+q.getAuthor()+"\n");
+                        System.out.print("작가 : ");
+                        String author = sc.nextLine();
+                        q.modify(content,author);
+                        isExist = true;
+                        break;
+                    }
+                }
+                if(!isExist) System.out.print(id+"번 명언은 존재하지 않습니다.\n");
             }
         }
     }
@@ -82,6 +99,12 @@ class Quote{
         this.content = content;
         this.author = author;
     }
+
+    public void modify(String content, String author){
+        setContent(content);
+        setAuthor(author);
+    }
+
     @Override
     public String toString(){
         return this.id+" / "+ this.author+" / "+this.content;
