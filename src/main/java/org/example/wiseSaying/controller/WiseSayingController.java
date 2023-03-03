@@ -2,30 +2,32 @@ package org.example.wiseSaying.controller;
 import org.example.Container;
 import org.example.Rq;
 import org.example.wiseSaying.entity.WiseSaying;
+import org.example.wiseSaying.service.WiseSayingService;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class WiseSayingController {
-    private long lastWiseSaying;
-    private final List<WiseSaying> wiseSayingList;
+    private final WiseSayingService wiseSayingService;
 
     public WiseSayingController(  ){
-        lastWiseSaying =1;
-        wiseSayingList = new LinkedList<>();
+        wiseSayingService = new WiseSayingService();
     }
     public void write() {
-        long id = lastWiseSaying;
         System.out.print("명언 : ");
         String content = Container.getScanner().nextLine().trim();
         System.out.print("작가 : ");
         String author = Container.getScanner().nextLine().trim();
-        WiseSaying wiseSaying = new WiseSaying(id, content, author);
-        wiseSayingList.add(wiseSaying);
-        System.out.printf("%d번 명언이 등록되었습니다.\n",lastWiseSaying++);
+
+        //서비스에는 고객과 상호작용 하는 부분이 있으면 안됨
+        long id = wiseSayingService.write(content,author);
+        System.out.printf("%d번 명언이 등록되었습니다.\n",id);
+
     }
 
     public void list() {
+        List<WiseSaying>wiseSayingList = wiseSayingService.findAll();
+
         System.out.println("번호 / 작가 / 명언");
         System.out.println("---------------");
 
@@ -35,27 +37,27 @@ public class WiseSayingController {
     }
 
     public void remove( Rq rq ) {
-        int id = rq.getIntParam("id",-1);
+        long id = rq.getLongParam("id",-1);
         if(id==-1){
             System.out.println("id(정수)를 입력하세요.");
             return;
         }
-        WiseSaying wiseSaying = findById(id);
+        WiseSaying wiseSaying = wiseSayingService.findById(id);
         if(wiseSaying==null){
             System.out.printf("%d번 명언은 존재하지 않습니다.\n",id);
             return;
         }
-        wiseSayingList.remove(wiseSaying);
+        wiseSayingService.remove(wiseSaying);
         System.out.printf("%d번 명언이 삭제되었습니다.\n",id);
     }
 
     public void modify(Rq rq) {
-        int id = rq.getIntParam("id",-1);
+        long id = rq.getLongParam("id",-1);
         if(id==-1){
             System.out.println("id(정수)를 입력하세요.");
             return;
         }
-        WiseSaying wiseSaying = findById(id);
+        WiseSaying wiseSaying = wiseSayingService.findById(id);
         if(wiseSaying==null){
             System.out.printf("%d번 명언은 존재하지 않습니다.\n",id);
             return;
@@ -68,15 +70,8 @@ public class WiseSayingController {
         String author = Container.getScanner().nextLine().trim();
         wiseSaying.setContent(content);
         wiseSaying.setAuthorName(author);
+        wiseSayingService.modify(wiseSaying, content, author);
         System.out.printf("%d번 명언이 수정되었습니다.\n",id);
     }
 
-    public WiseSaying findById(int id){
-        for(WiseSaying wiseSaying : wiseSayingList){
-            if(wiseSaying.getId()==id){
-                return wiseSaying;
-            }
-        }
-        return null;
-    }
 }
