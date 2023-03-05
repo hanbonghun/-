@@ -34,6 +34,9 @@ public class App {
                 case "수정":
                     wiseSayingController.modify(rq);
                     break;
+                case "빌드":
+                    wiseSayingController.build();
+                    break;
 
             }
         }
