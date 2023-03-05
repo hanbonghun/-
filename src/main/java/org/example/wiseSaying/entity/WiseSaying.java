@@ -3,12 +3,12 @@ package org.example.wiseSaying.entity;
 public class WiseSaying {
     private long id;
     private String content;
-    private String authorNmae;
+    private String authorName;
 
     public WiseSaying(long id, String content, String authorName) {
         this.id = id;
         this.content = content;
-        this.authorNmae = authorName;
+        this.authorName = authorName;
     }
 
     public long getId() {
@@ -28,15 +28,26 @@ public class WiseSaying {
     }
 
     public String getAuthorName() {
-        return authorNmae;
+        return authorName;
     }
 
     public void setAuthorName(String authorNmae) {
-        this.authorNmae = authorNmae;
+        this.authorName = authorNmae;
     }
 
     public String toString(){
         return getId()+" / "+getAuthorName()+" / "+getContent();
     }
 
+    public String toJson() {
+        return """
+                {
+                    "id": %d, 
+                    "content":"%s",
+                    "authorName":"%s"
+                }
+                """
+                .stripIndent()
+                .formatted(id, content, authorName);
+    }
 }
