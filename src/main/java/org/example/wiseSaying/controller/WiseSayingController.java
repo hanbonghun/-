@@ -4,7 +4,6 @@ import org.example.Rq;
 import org.example.wiseSaying.entity.WiseSaying;
 import org.example.wiseSaying.service.WiseSayingService;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class WiseSayingController {
